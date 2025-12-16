@@ -4,17 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 6: Global State Management</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
-        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
-        nav a:hover { text-decoration: underline; }
-        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
-        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
-        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
-        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -23,18 +14,7 @@
     </header>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="module0.html">0. JS Prep</a>
-        <a href="module1.html">1. Fundamentals</a>
-        <a href="module2.html">2. Hooks & Lifecycle</a>
-        <a href="module3.html">3. Routing & API</a>
-        <a href="module4.html">4. State & Forms</a>
-        <a href="module5.html">5. Advanced Patterns</a>
-        <a href="module6.html">6. Global State</a>
-        <a href="module7.html">7. Testing</a>
-        <a href="module8.html">8. Pro Workflow</a>
-        <a href="module9.html">9. Perf & Security</a>
-        <a href="capstone.html">Capstone</a>
+        <!-- Navigation injected by layout.js -->
     </nav>
 
     <main>
@@ -64,67 +44,80 @@
             </ul>
         </details>
 
-        <h2>2. The Build Challenge: "Shopping Cart"</h2>
-        <div class="task">
-            <h3>Level 1: Redux Toolkit Implementation</h3>
-            <p>Create a <code>store</code> folder.</p>
-            <ul>
-                <li>Setup a Redux store with a <code>cartSlice</code>.</li>
-                <li><strong>State:</strong> <code>items</code> (array of objects: id, name, price, quantity).</li>
-                <li><strong>Actions:</strong>
-                    <ul>
-                        <li><code>addToCart(item)</code>: If item exists, increment quantity. Else add it.</li>
-                        <li><code>removeFromCart(id)</code>: Remove item completely.</li>
-                        <li><code>updateQuantity({id, quantity})</code>.</li>
-                    </ul>
-                </li>
-                <li><strong>Selectors:</strong>
-                    <ul>
-                        <li><code>selectCartTotal</code>: Calculate total price.</li>
-                        <li><code>selectCartCount</code>: Calculate total number of items.</li>
-                    </ul>
-                </li>
-                <li>Connect this to a "Products" page (add buttons) and a "Cart" page (display items).</li>
-            </ul>
+        <div class="jira-ticket">
+            <div class="jira-header">
+                <span class="jira-id">REQ-007</span>
+                <span class="jira-status">To Do</span>
+            </div>
+            <div class="jira-body">
+                <h3 class="jira-title">Implement Shopping Cart State</h3>
+                
+                <div class="jira-section">
+                    <span class="jira-label">User Story</span>
+                    <p>As a customer, I want to add items to my cart and see the total price update instantly, regardless of which page I am on.</p>
+                </div>
 
-            <h3>Level 2: Zustand Migration (Senior Constraint)</h3>
-            <p>Now, create a separate branch or folder.</p>
-            <ul>
-                <li>Re-implement the EXACT same logic using <strong>Zustand</strong>.</li>
-                <li><strong>Constraint:</strong> You must use the "Selector" pattern in Zustand too, to avoid re-rendering the component if unrelated state changes.</li>
-                <li><code>const items = useStore(state => state.items)</code> (Good) vs <code>const { items } = useStore()</code> (Bad - re-renders on everything).</li>
-            </ul>
+                <div class="jira-section">
+                    <span class="jira-label">Acceptance Criteria</span>
+                    <ul class="req-list">
+                        <li><strong>Redux Toolkit Setup:</strong>
+                            <ul>
+                                <li>Create <code>cartSlice</code> with <code>items</code> array.</li>
+                                <li>Actions: <code>addToCart</code>, <code>removeFromCart</code>, <code>updateQuantity</code>.</li>
+                                <li>Logic: If item exists, increment quantity. Else add new.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Selectors:</strong>
+                            <ul>
+                                <li><code>selectCartTotal</code>: Sum of (price * quantity).</li>
+                                <li><code>selectCartCount</code>: Total number of items.</li>
+                            </ul>
+                        </li>
+                        <li><strong>UI Integration:</strong>
+                            <ul>
+                                <li>"Products" page with "Add" buttons.</li>
+                                <li>"Cart" page displaying items and total.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
-            <h3>Level 3: Nice to Haves</h3>
-            <ul>
-                <li><strong>Persistence:</strong> Use Zustand's <code>persist</code> middleware to save the cart to localStorage automatically.</li>
-                <li><strong>Toast Notifications:</strong> Create a global "Toast" store. When an item is added to the cart, dispatch a <code>showToast("Added to cart!")</code> action that displays a popup for 3 seconds.</li>
-            </ul>
+                <div class="jira-section">
+                    <span class="jira-label">Senior Bonus</span>
+                    <ul class="req-list">
+                        <li><strong>Zustand Migration:</strong> Re-implement the exact same logic using Zustand in a separate branch/folder.</li>
+                        <li><strong>Performance:</strong> Use selectors in Zustand (<code>useStore(state => state.items)</code>) to prevent unnecessary re-renders.</li>
+                        <li><strong>Persistence:</strong> Use middleware to save the cart to <code>localStorage</code>.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <h2>3. The Bug Hunt</h2>
         <div class="bug-hunt">
-            <h3>🐛 Scenario: Mutable State in Redux</h3>
-            <p><strong>The Setup:</strong> In a Redux reducer, try to mutate state directly <em>without</em> using Toolkit's `createSlice` (which uses Immer under the hood), or try to mutate a nested object deeply in a way that Redux doesn't detect.</p>
+            <h3>🐛 Scenario: The Mutated State</h3>
+            <p><strong>The Setup (Redux):</strong></p>
+            <pre><code class="language-javascript">// In a Redux reducer
+state.items.push(newItem); // This works in RTK because of Immer!
+
+// BUT, imagine you are using Context or old Redux:
+return { ...state, items: state.items.push(newItem) }; // BUG!</code></pre>
+            <p><strong>The Bug:</strong> <code>Array.push</code> returns the <em>new length</em> of the array, not the array itself. So your state becomes a number (e.g., <code>3</code>) instead of an object.</p>
             <p><strong>The Task:</strong></p>
             <ol>
-                <li>Understand why Redux requires immutability.</li>
-                <li>Write a test case where a component fails to re-render because the object reference didn't change.</li>
+                <li>Write the correct immutable update logic without Immer.</li>
+                <li><code>return { ...state, items: [...state.items, newItem] }</code>.</li>
             </ol>
-        </div>
-
-        <h2>4. Test on your own</h2>
-        <div class="task">
-            <h3>Verify your Store</h3>
-            <ul>
-                <li><strong>Selector Check:</strong> Add a log in your Cart Icon component. Update the <em>price</em> of an item in the store (but not the count). Does the Cart Icon (which only shows count) re-render? (It shouldn't).</li>
-                <li><strong>Persist Check:</strong> Add items to cart. Close the tab. Re-open. Are items still there?</li>
-            </ul>
         </div>
     </main>
 
     <footer>
-        <p>Module 6 Complete? Move to Module 7.</p>
+        <!-- Footer injected by layout.js -->
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js"></script>
+    <script src="layout.js"></script>
 </body>
 </html>

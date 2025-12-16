@@ -4,17 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 5: Advanced Patterns</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
-        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
-        nav a:hover { text-decoration: underline; }
-        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
-        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
-        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
-        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -23,18 +14,7 @@
     </header>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="module0.html">0. JS Prep</a>
-        <a href="module1.html">1. Fundamentals</a>
-        <a href="module2.html">2. Hooks & Lifecycle</a>
-        <a href="module3.html">3. Routing & API</a>
-        <a href="module4.html">4. State & Forms</a>
-        <a href="module5.html">5. Advanced Patterns</a>
-        <a href="module6.html">6. Global State</a>
-        <a href="module7.html">7. Testing</a>
-        <a href="module8.html">8. Pro Workflow</a>
-        <a href="module9.html">9. Perf & Security</a>
-        <a href="capstone.html">Capstone</a>
+        <!-- Navigation injected by layout.js -->
     </nav>
 
     <main>
@@ -60,62 +40,75 @@
             </ul>
         </details>
 
-        <h2>2. The Build Challenge: "Custom Hook Library"</h2>
-        <div class="task">
-            <h3>Level 1: The Basics</h3>
-            <p>Extract logic from your previous modules into reusable hooks.</p>
-            <ol>
-                <li><code>useFetch(url)</code>:
-                    <ul>
-                        <li>Accepts a URL.</li>
-                        <li>Returns <code>{ data, loading, error }</code>.</li>
-                        <li>Handles the AbortController logic internally.</li>
-                    </ul>
-                </li>
-                <li><code>useLocalStorage(key, initialValue)</code>:
-                    <ul>
-                        <li>Syncs a state variable with <code>localStorage</code>.</li>
-                        <li>Updates storage when state changes.</li>
-                        <li>Initializes state from storage if it exists.</li>
-                    </ul>
-                </li>
-            </ol>
-            <p><strong>Implementation:</strong> Use <code>useFetch</code> in your Users page. Use <code>useLocalStorage</code> to persist the "Dark Mode" preference (add a toggle for this).</p>
+        <div class="jira-ticket">
+            <div class="jira-header">
+                <span class="jira-id">REQ-006</span>
+                <span class="jira-status">To Do</span>
+            </div>
+            <div class="jira-body">
+                <h3 class="jira-title">Refactor to Custom Hooks</h3>
+                
+                <div class="jira-section">
+                    <span class="jira-label">User Story</span>
+                    <p>As a developer, I want to reuse logic across components so that I don't violate DRY (Don't Repeat Yourself) principles.</p>
+                </div>
 
-            <h3>Level 2: Senior Constraints (Generics)</h3>
-            <ul>
-                <li><strong>Typed Hooks:</strong> Your <code>useFetch</code> must be generic: <code>useFetch&lt;User[]&gt;(...)</code>. It should not return <code>any</code>.</li>
-                <li><strong>Typed Storage:</strong> Your <code>useLocalStorage</code> should infer the type from the initial value.</li>
-                <li><strong>Event Listeners:</strong> Create <code>useWindowSize()</code>. It must attach a 'resize' listener on mount and <strong>remove it</strong> on unmount. If you forget the cleanup, you fail.</li>
-            </ul>
+                <div class="jira-section">
+                    <span class="jira-label">Acceptance Criteria</span>
+                    <ul class="req-list">
+                        <li><strong>useFetch(url):</strong>
+                            <ul>
+                                <li>Accepts a URL string.</li>
+                                <li>Returns <code>{ data, loading, error }</code>.</li>
+                                <li>Handles <code>AbortController</code> to cancel requests on unmount.</li>
+                            </ul>
+                        </li>
+                        <li><strong>useLocalStorage(key, initialValue):</strong>
+                            <ul>
+                                <li>Syncs state with <code>localStorage</code>.</li>
+                                <li>Updates storage when state changes.</li>
+                                <li>Initializes from storage if available.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
-            <h3>Level 3: Nice to Haves</h3>
-            <ul>
-                <li><strong>Debounce Hook:</strong> Create <code>useDebounce(value, delay)</code>. Use this for the search bar in Module 3. It should only trigger the API search 500ms after the user stops typing.</li>
-                <li><strong>Previous Value:</strong> Create <code>usePrevious(value)</code> to track what a prop was in the <em>last</em> render. Useful for comparing changes.</li>
-            </ul>
+                <div class="jira-section">
+                    <span class="jira-label">Senior Bonus</span>
+                    <ul class="req-list">
+                        <li><strong>Generics:</strong> Make <code>useFetch&lt;T&gt;</code> and <code>useLocalStorage&lt;T&gt;</code> type-safe.</li>
+                        <li><strong>useWindowSize:</strong> Create a hook that tracks window dimensions. MUST remove the event listener on unmount.</li>
+                        <li><strong>useDebounce:</strong> Create a hook to delay API calls in the search bar (500ms delay).</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <h2>3. The Bug Hunt</h2>
         <div class="bug-hunt">
             <h3>🐛 Scenario: The Expensive Calculation</h3>
-            <p><strong>The Setup:</strong> Create a function that is intentionally slow (e.g., a loop that runs 10 million times). Call this function inside your component body to calculate a derived value.</p>
-            <p><strong>The Issue:</strong> Every time you type in an unrelated input field, the UI freezes because the component re-renders and re-runs the slow function.</p>
-            <p><strong>The Task:</strong> Wrap the calculation in <code>useMemo</code> so it only runs when its specific dependencies change.</p>
-        </div>
-
-        <h2>4. Test on your own</h2>
-        <div class="task">
-            <h3>Verify your Hooks</h3>
-            <ul>
-                <li><strong>Storage Sync:</strong> Open your app in two tabs. Change the "Dark Mode" toggle in Tab 1. Does Tab 2 update automatically? (Hint: Listen for the 'storage' event in your hook).</li>
-                <li><strong>Debounce Check:</strong> Type "React" quickly in your search bar. Check the Network tab. Did you see 5 requests (R, Re, Rea...) or just 1 request at the end? (You want just 1).</li>
-            </ul>
+            <p><strong>The Setup:</strong></p>
+            <pre><code class="language-jsx">function Dashboard({ data }) {
+  // This runs on EVERY render, even if 'data' hasn't changed!
+  const processedData = expensiveMathOperation(data); 
+  return &lt;Chart data={processedData} /&gt;;
+}</code></pre>
+            <p><strong>The Bug:</strong> The dashboard is laggy because <code>expensiveMathOperation</code> takes 200ms to run, and the component re-renders whenever the parent updates.</p>
+            <p><strong>The Task:</strong></p>
+            <ol>
+                <li>Wrap the calculation in <code>useMemo</code>.</li>
+                <li>Explain why <code>useMemo</code> needs a dependency array.</li>
+            </ol>
         </div>
     </main>
 
     <footer>
-        <p>Module 5 Complete? Move to Module 6.</p>
+        <!-- Footer injected by layout.js -->
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js"></script>
+    <script src="layout.js"></script>
 </body>
 </html>

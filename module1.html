@@ -4,17 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 1: The Foundation</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
-        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
-        nav a:hover { text-decoration: underline; }
-        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
-        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
-        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
-        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -23,18 +14,7 @@
     </header>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="module0.html">0. JS Prep</a>
-        <a href="module1.html">1. Fundamentals</a>
-        <a href="module2.html">2. Hooks & Lifecycle</a>
-        <a href="module3.html">3. Routing & API</a>
-        <a href="module4.html">4. State & Forms</a>
-        <a href="module5.html">5. Advanced Patterns</a>
-        <a href="module6.html">6. Global State</a>
-        <a href="module7.html">7. Testing</a>
-        <a href="module8.html">8. Pro Workflow</a>
-        <a href="module9.html">9. Perf & Security</a>
-        <a href="capstone.html">Capstone</a>
+        <!-- Navigation injected by layout.js -->
     </nav>
 
     <main>
@@ -42,7 +22,7 @@
         
         <h3>1.1 Components are just Functions</h3>
         <p>Forget "classes" or "instances" for a moment. A React component is simply a JavaScript function. It takes an input (<code>props</code>) and returns an output (<code>JSX</code>). If you call the function with the same props, you should get the exact same UI. This is called <strong>idempotency</strong>.</p>
-        <pre><code>// Input: { name: "Alice" }
+        <pre><code class="language-jsx">// Input: { name: "Alice" }
 // Output: &lt;h1&gt;Hello, Alice&lt;/h1&gt;
 function Welcome(props) {
   return &lt;h1&gt;Hello, {props.name}&lt;/h1&gt;;
@@ -75,14 +55,60 @@ interface ButtonProps extends React.ButtonHTMLAttributes&lt;HTMLButtonElement&gt
 }
 // Note: It extends native HTML attributes so you don't have to manually type 'onClick', 'disabled', etc.</code></pre>
 
-        <details>
-            <summary><strong>📚 Official Documentation References</strong></summary>
-            <ul>
-                <li><a href="https://react.dev/learn/describing-the-ui" target="_blank">Describing the UI</a> (Components, JSX, Props)</li>
-                <li><a href="https://react.dev/learn/conditional-rendering" target="_blank">Conditional Rendering</a></li>
-                <li><a href="https://react.dev/learn/rendering-lists" target="_blank">Rendering Lists</a></li>
-            </ul>
-        </details>
+        <h3>1.3 TypeScript Interfaces: The Contract</h3>
+        <p>In professional React, we don't guess what props a component needs. We define a contract.</p>
+        <pre><code class="language-tsx">interface ButtonProps {
+  label: string;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary'; // Optional prop
+  disabled?: boolean;
+}
+
+const Button = ({ label, onClick, variant = 'primary', disabled }: ButtonProps) => {
+  return (
+    &lt;button 
+      className={`btn-${variant}`} 
+      onClick={onClick} 
+      disabled={disabled}
+    &gt;
+      {label}
+    &lt;/button&gt;
+  );
+};</code></pre>
+
+        <div class="jira-ticket">
+            <div class="jira-header">
+                <span class="jira-id">REQ-002</span>
+                <span class="jira-status">To Do</span>
+            </div>
+            <div class="jira-body">
+                <h3 class="jira-title">Create a Reusable "UserCard" Component</h3>
+                
+                <div class="jira-section">
+                    <span class="jira-label">User Story</span>
+                    <p>As a UI designer, I need a standard card component to display user profiles across the application so that the design remains consistent.</p>
+                </div>
+
+                <div class="jira-section">
+                    <span class="jira-label">Acceptance Criteria</span>
+                    <ul class="req-list">
+                        <li>Create a <code>UserCard</code> component.</li>
+                        <li>It must accept <code>name</code> (string), <code>role</code> (string), and <code>isActive</code> (boolean).</li>
+                        <li>If <code>isActive</code> is true, display a green "Active" badge. If false, a red "Offline" badge.</li>
+                        <li>Style the card with a border and shadow (use CSS classes).</li>
+                    </ul>
+                </div>
+
+                <div class="jira-section">
+                    <span class="jira-label">Senior Bonus</span>
+                    <ul class="req-list">
+                        <li><strong>TypeScript:</strong> Define a strict <code>UserCardProps</code> interface.</li>
+                        <li><strong>Destructuring:</strong> Destructure props in the function signature.</li>
+                        <li><strong>Composition:</strong> Allow the card to accept <code>children</code> so we can pass arbitrary content inside it later.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <h2>2. The Setup Challenge</h2>
         <div class="task">
@@ -135,12 +161,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes&lt;HTMLButtonElement&gt
         <h2>4. The Bug Hunt</h2>
         <div class="bug-hunt">
             <h3>🐛 Scenario: The Missing Key</h3>
-            <p><strong>The Setup:</strong> Create a list of items in your state (or just a variable) with duplicate names, e.g., <code>["Apple", "Banana", "Apple"]</code>.</p>
-            <p><strong>The Bug:</strong> Render this list using <code>map</code> and use the <strong>index</strong> as the key (e.g., <code>key={index}</code>).</p>
+            <p><strong>The Setup:</strong></p>
+            <pre><code class="language-jsx">const users = ["Alice", "Bob", "Charlie"];
+return (
+  &lt;ul&gt;
+    {users.map(user => &lt;li&gt;{user}&lt;/li&gt;)}
+  &lt;/ul&gt;
+);</code></pre>
+            <p><strong>The Bug:</strong> Check your console. You'll see a warning: "Each child in a list should have a unique 'key' prop."</p>
             <p><strong>The Task:</strong></p>
             <ol>
-                <li>Research why using <code>index</code> as a key is considered an anti-pattern in React (search "React keys index anti-pattern").</li>
-                <li>Refactor your data to have unique IDs and use those IDs as keys.</li>
+                <li>Fix the warning by adding a <code>key</code>.</li>
+                <li><strong>Interview Question:</strong> Why does React need keys? (Hint: Reconciliation).</li>
+                <li><strong>Trap:</strong> Why is using <code>index</code> as a key (e.g., <code>map((u, i) => key={i})</code>) dangerous if the list order changes?</li>
             </ol>
         </div>
 
@@ -155,7 +188,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes&lt;HTMLButtonElement&gt
     </main>
 
     <footer>
-        <p>Module 1 Complete? Move to Module 2.</p>
+        <!-- Footer injected by layout.js -->
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-tsx.min.js"></script>
+    <script src="layout.js"></script>
 </body>
 </html>

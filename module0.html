@@ -4,17 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 0: JS Prerequisites</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
-        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
-        nav a:hover { text-decoration: underline; }
-        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
-        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
-        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
-        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -23,18 +14,7 @@
     </header>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="module0.html">0. JS Prep</a>
-        <a href="module1.html">1. Fundamentals</a>
-        <a href="module2.html">2. Hooks & Lifecycle</a>
-        <a href="module3.html">3. Routing & API</a>
-        <a href="module4.html">4. State & Forms</a>
-        <a href="module5.html">5. Advanced Patterns</a>
-        <a href="module6.html">6. Global State</a>
-        <a href="module7.html">7. Testing</a>
-        <a href="module8.html">8. Pro Workflow</a>
-        <a href="module9.html">9. Perf & Security</a>
-        <a href="capstone.html">Capstone</a>
+        <!-- Navigation injected by layout.js -->
     </nav>
 
     <main>
@@ -56,50 +36,55 @@
         <br><strong>Good:</strong> <code>const updatedUser = { ...user, name: "Alice" }</code>
         <br>This uses the <strong>Spread Operator</strong> to copy properties to a new object.</p>
 
-        <details>
-            <summary><strong>📚 Official Documentation References</strong></summary>
-            <ul>
-                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" target="_blank">Destructuring Assignment</a></li>
-                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">Array.prototype.map()</a></li>
-                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank">Spread Syntax (...)</a></li>
-            </ul>
-        </details>
+        <div class="jira-ticket">
+            <div class="jira-header">
+                <span class="jira-id">REQ-001</span>
+                <span class="jira-status">To Do</span>
+            </div>
+            <div class="jira-body">
+                <h3 class="jira-title">Build "The Data Transformer" Utility</h3>
+                
+                <div class="jira-section">
+                    <span class="jira-label">User Story</span>
+                    <p>As a data analyst, I need a utility to process raw order data so that I can view revenue from shipped orders only.</p>
+                </div>
 
-        <h2>2. The Build Challenge: "The Data Transformer"</h2>
-        <div class="task">
-            <h3>Level 1: The Basics</h3>
-            <p>Create a pure JavaScript file (or run this in a console). Given an array of <code>orders</code>:</p>
-            <pre><code>const orders = [
+                <div class="jira-section">
+                    <span class="jira-label">Acceptance Criteria</span>
+                    <ul class="req-list">
+                        <li>Filter the list to keep only "shipped" orders.</li>
+                        <li>Map over them to create an array of strings: "Order #ID: $AMOUNT".</li>
+                        <li>Reduce the list to calculate the total revenue of shipped orders.</li>
+                        <li><strong>Constraint:</strong> Use <code>.map()</code>, <code>.filter()</code>, and <code>.reduce()</code>. No <code>for</code> loops.</li>
+                    </ul>
+                </div>
+
+                <div class="jira-section">
+                    <span class="jira-label">Technical Notes</span>
+                    <pre><code class="language-javascript">const orders = [
   { id: 1, status: "pending", amount: 50 },
   { id: 2, status: "shipped", amount: 100 },
   { id: 3, status: "cancelled", amount: 20 },
   { id: 4, status: "shipped", amount: 150 },
 ];</code></pre>
-            <ol>
-                <li>Filter the list to keep only "shipped" orders.</li>
-                <li>Map over them to create an array of strings: "Order #ID: $AMOUNT".</li>
-                <li>Reduce the list to calculate the total revenue of shipped orders.</li>
-            </ol>
+                </div>
 
-            <h3>Level 2: Senior Constraints (Functional Chain)</h3>
-            <ul>
-                <li><strong>Chaining:</strong> Perform the filter, map, and reduce operations in a single chain if possible, or at least without creating intermediate variables like <code>shippedOrders</code>.</li>
-                <li><strong>Immutability:</strong> Ensure that the original <code>orders</code> array is completely unchanged after your operations.</li>
-                <li><strong>Async:</strong> Wrap this logic in an <code>async</code> function that simulates fetching the data first (use <code>await new Promise(...)</code>).</li>
-            </ul>
-
-            <h3>Level 3: Nice to Haves (TypeScript)</h3>
-            <ul>
-                <li><strong>Generics:</strong> Write a reusable function <code>filterByStatus&lt;T&gt;(items: T[], status: string): T[]</code>.</li>
-                <li><strong>Strict Typing:</strong> Define an interface <code>Order</code> and ensure your array is typed as <code>Order[]</code>.</li>
-            </ul>
+                <div class="jira-section">
+                    <span class="jira-label">Senior Bonus</span>
+                    <ul class="req-list">
+                        <li><strong>Chaining:</strong> Perform all operations in a single chain without intermediate variables.</li>
+                        <li><strong>Immutability:</strong> Ensure <code>orders</code> array remains unchanged.</li>
+                        <li><strong>TypeScript:</strong> Define an <code>Order</code> interface.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <h2>3. The Bug Hunt</h2>
         <div class="bug-hunt">
             <h3>🐛 Scenario: The Accidental Mutation</h3>
             <p><strong>The Setup:</strong></p>
-            <pre><code>const user = { name: "John", address: { city: "NY" } };
+            <pre><code class="language-javascript">const user = { name: "John", address: { city: "NY" } };
 const updatedUser = { ...user };
 updatedUser.address.city = "LA";
 console.log(user.address.city); // What does this print?</code></pre>
@@ -122,7 +107,11 @@ console.log(user.address.city); // What does this print?</code></pre>
     </main>
 
     <footer>
-        <p>Module 0 Complete? Move to Module 1.</p>
+        <!-- Footer injected by layout.js -->
     </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="layout.js"></script>
 </body>
 </html>

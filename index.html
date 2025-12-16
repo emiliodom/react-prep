@@ -4,17 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React Competence Roadmap</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
-        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
-        nav a:hover { text-decoration: underline; }
-        .warning { background: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 5px; color: #856404; margin: 20px 0; }
-        .outcome { background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; color: #155724; }
-        .methodology { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
-        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -23,26 +13,14 @@
     </header>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="module0.html">0. JS Prep</a>
-        <a href="module1.html">1. Fundamentals</a>
-        <a href="module2.html">2. Hooks & Lifecycle</a>
-        <a href="module3.html">3. Routing & API</a>
-        <a href="module4.html">4. State & Forms</a>
-        <a href="module5.html">5. Advanced Patterns</a>
-        <a href="module6.html">6. Global State</a>
-        <a href="module7.html">7. Testing</a>
-        <a href="module8.html">8. Pro Workflow</a>
-        <a href="module9.html">9. Perf & Security</a>
-        <a href="capstone.html">Capstone</a>
-        <a href="interview_index.html" style="color: #d32f2f;">★ Interview Prep</a>
+        <!-- Navigation injected by layout.js -->
     </nav>
 
     <main>
         <h2>Introduction</h2>
         <p>This is not a tutorial. This is a curriculum. I will not give you the code. I will give you the requirements, the theory, and the documentation links. You must build the solutions.</p>
 
-        <div class="warning">
+        <div class="bug-hunt" style="background: #fff3cd; border-color: #ffeeba; color: #856404;">
             <h3>⚠️ Brutally Honest Expectations</h3>
             <ul>
                 <li><strong>Pace:</strong> Fast and aggressive.</li>
@@ -52,7 +30,7 @@
             </ul>
         </div>
 
-        <div class="outcome">
+        <div class="task" style="background: #d4edda; border-color: #c3e6cb; color: #155724;">
             <h3>🎯 Expected Outcome</h3>
             <p>By the end of this guide, you will not just "know" React. You will be able to:</p>
             <ul>
@@ -66,14 +44,28 @@
             </ul>
         </div>
 
-        <div class="methodology">
-            <h3>🧠 The Methodology: How You Will Know</h3>
-            <p>This guide uses a <strong>"Build-Break-Fix"</strong> pedagogy designed to prove competence, not just familiarity.</p>
-            <ul>
-                <li><strong>The Build (Construction):</strong> You are given requirements, not code. If you can build the feature from a blank file, you own the knowledge. If you have to look up the syntax, you are still learning.</li>
-                <li><strong>The Bug Hunt (Reverse Engineering):</strong> I intentionally ask you to break things or fix broken scenarios. You cannot fix a "Stale Closure" or a "Render Loop" by guessing. You must understand the internal mechanics of React.</li>
-                <li><strong>The Capstone (Synthesis):</strong> The final project combines everything. The ultimate test is: <em>"Can I build this entire app again, from scratch, without looking at my old code?"</em> If yes, you are ready.</li>
-            </ul>
+        <div class="jira-ticket">
+            <div class="jira-header">
+                <span class="jira-id">INTRO-001</span>
+                <span class="jira-status">Methodology</span>
+            </div>
+            <div class="jira-body">
+                <h3 class="jira-title">The "Build-Break-Fix" Pedagogy</h3>
+                
+                <div class="jira-section">
+                    <span class="jira-label">Concept</span>
+                    <p>This guide is designed to prove competence, not just familiarity.</p>
+                </div>
+
+                <div class="jira-section">
+                    <span class="jira-label">Phases</span>
+                    <ul class="req-list">
+                        <li><strong>The Build (Construction):</strong> You are given requirements, not code. If you can build the feature from a blank file, you own the knowledge.</li>
+                        <li><strong>The Bug Hunt (Reverse Engineering):</strong> I intentionally ask you to break things or fix broken scenarios. You cannot fix a "Stale Closure" or a "Render Loop" by guessing.</li>
+                        <li><strong>The Capstone (Synthesis):</strong> The final project combines everything. The ultimate test is: <em>"Can I build this entire app again, from scratch, without looking at my old code?"</em></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <h3>How to use this guide</h3>
@@ -86,7 +78,8 @@
     </main>
 
     <footer>
-        <p>Created by GitHub Copilot for your professional growth.</p>
+        <!-- Footer injected by layout.js -->
     </footer>
+    <script src="layout.js"></script>
 </body>
 </html>
