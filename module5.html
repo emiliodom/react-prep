@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5: Advanced Patterns</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
+        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Module 5: Advanced Patterns</h1>
+        <p>Custom Hooks, Reducers, and Performance.</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="module0.html">0. JS Prep</a>
+        <a href="module1.html">1. Fundamentals</a>
+        <a href="module2.html">2. Hooks & Lifecycle</a>
+        <a href="module3.html">3. Routing & API</a>
+        <a href="module4.html">4. State & Forms</a>
+        <a href="module5.html">5. Advanced Patterns</a>
+        <a href="module6.html">6. Global State</a>
+        <a href="module7.html">7. Testing</a>
+        <a href="module8.html">8. Pro Workflow</a>
+        <a href="module9.html">9. Perf & Security</a>
+        <a href="capstone.html">Capstone</a>
+    </nav>
+
+    <main>
+        <h2>1. Core Concepts</h2>
+        <p><strong>Custom Hooks:</strong> JavaScript functions that start with <code>use...</code> and call other hooks. They allow you to share <em>logic</em> (like fetching or form handling) between components without sharing UI.</p>
+        <p><strong>useReducer:</strong> An alternative to <code>useState</code> for complex logic. You dispatch "actions" (instructions) to a "reducer" (function) that calculates the new state.</p>
+        <p><strong>Memoization (useMemo/useCallback):</strong> Performance tools. They tell React: "If these inputs haven't changed, don't re-calculate this value or re-create this function."</p>
+
+        <h3>1.1 Deep Dive: The Rules of Hooks</h3>
+        <p>Hooks are magic, but they have rules. They rely on call order.
+        <br>1. Only call hooks at the top level. Never inside loops, conditions, or nested functions.
+        <br>2. Only call hooks from React functions.</p>
+
+        <h3>1.2 Industry Standard: The "use" Prefix</h3>
+        <p>If a function uses a hook, it <strong>must</strong> be named <code>useSomething</code>. This is not just a convention; linters rely on it to enforce the Rules of Hooks. If you write a helper function that calls <code>useContext</code> but name it <code>getAuth()</code>, you will break the linter and potentially your app.</p>
+
+        <details>
+            <summary><strong>📚 Deep Dive (Documentation)</strong></summary>
+            <ul>
+                <li><a href="https://react.dev/learn/reusing-logic-with-custom-hooks" target="_blank">Custom Hooks</a></li>
+                <li><a href="https://react.dev/reference/react/useReducer" target="_blank">useReducer</a></li>
+                <li><a href="https://react.dev/reference/react/useMemo" target="_blank">useMemo</a> & <a href="https://react.dev/reference/react/useCallback" target="_blank">useCallback</a></li>
+            </ul>
+        </details>
+
+        <h2>2. The Build Challenge: "Custom Hook Library"</h2>
+        <div class="task">
+            <h3>Level 1: The Basics</h3>
+            <p>Extract logic from your previous modules into reusable hooks.</p>
+            <ol>
+                <li><code>useFetch(url)</code>:
+                    <ul>
+                        <li>Accepts a URL.</li>
+                        <li>Returns <code>{ data, loading, error }</code>.</li>
+                        <li>Handles the AbortController logic internally.</li>
+                    </ul>
+                </li>
+                <li><code>useLocalStorage(key, initialValue)</code>:
+                    <ul>
+                        <li>Syncs a state variable with <code>localStorage</code>.</li>
+                        <li>Updates storage when state changes.</li>
+                        <li>Initializes state from storage if it exists.</li>
+                    </ul>
+                </li>
+            </ol>
+            <p><strong>Implementation:</strong> Use <code>useFetch</code> in your Users page. Use <code>useLocalStorage</code> to persist the "Dark Mode" preference (add a toggle for this).</p>
+
+            <h3>Level 2: Senior Constraints (Generics)</h3>
+            <ul>
+                <li><strong>Typed Hooks:</strong> Your <code>useFetch</code> must be generic: <code>useFetch&lt;User[]&gt;(...)</code>. It should not return <code>any</code>.</li>
+                <li><strong>Typed Storage:</strong> Your <code>useLocalStorage</code> should infer the type from the initial value.</li>
+                <li><strong>Event Listeners:</strong> Create <code>useWindowSize()</code>. It must attach a 'resize' listener on mount and <strong>remove it</strong> on unmount. If you forget the cleanup, you fail.</li>
+            </ul>
+
+            <h3>Level 3: Nice to Haves</h3>
+            <ul>
+                <li><strong>Debounce Hook:</strong> Create <code>useDebounce(value, delay)</code>. Use this for the search bar in Module 3. It should only trigger the API search 500ms after the user stops typing.</li>
+                <li><strong>Previous Value:</strong> Create <code>usePrevious(value)</code> to track what a prop was in the <em>last</em> render. Useful for comparing changes.</li>
+            </ul>
+        </div>
+
+        <h2>3. The Bug Hunt</h2>
+        <div class="bug-hunt">
+            <h3>🐛 Scenario: The Expensive Calculation</h3>
+            <p><strong>The Setup:</strong> Create a function that is intentionally slow (e.g., a loop that runs 10 million times). Call this function inside your component body to calculate a derived value.</p>
+            <p><strong>The Issue:</strong> Every time you type in an unrelated input field, the UI freezes because the component re-renders and re-runs the slow function.</p>
+            <p><strong>The Task:</strong> Wrap the calculation in <code>useMemo</code> so it only runs when its specific dependencies change.</p>
+        </div>
+
+        <h2>4. Test on your own</h2>
+        <div class="task">
+            <h3>Verify your Hooks</h3>
+            <ul>
+                <li><strong>Storage Sync:</strong> Open your app in two tabs. Change the "Dark Mode" toggle in Tab 1. Does Tab 2 update automatically? (Hint: Listen for the 'storage' event in your hook).</li>
+                <li><strong>Debounce Check:</strong> Type "React" quickly in your search bar. Check the Network tab. Did you see 5 requests (R, Re, Rea...) or just 1 request at the end? (You want just 1).</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>Module 5 Complete? Move to Module 6.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7: Testing</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
+        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Module 7: Testing</h1>
+        <p>Vitest and React Testing Library.</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="module0.html">0. JS Prep</a>
+        <a href="module1.html">1. Fundamentals</a>
+        <a href="module2.html">2. Hooks & Lifecycle</a>
+        <a href="module3.html">3. Routing & API</a>
+        <a href="module4.html">4. State & Forms</a>
+        <a href="module5.html">5. Advanced Patterns</a>
+        <a href="module6.html">6. Global State</a>
+        <a href="module7.html">7. Testing</a>
+        <a href="module8.html">8. Pro Workflow</a>
+        <a href="module9.html">9. Perf & Security</a>
+        <a href="capstone.html">Capstone</a>
+    </nav>
+
+    <main>
+        <h2>1. Core Concepts</h2>
+        <p><strong>Unit vs Integration:</strong> Unit tests check one function in isolation. Integration tests check how components work together (e.g., clicking a button updates the list).</p>
+        <p><strong>React Testing Library (RTL):</strong> Tests from the <em>user's perspective</em>. It doesn't care about your state variables. It cares if the user can see the text "Success" on the screen.</p>
+        <p><strong>Vitest:</strong> The test runner. It executes your test files. It's a faster, modern replacement for Jest.</p>
+
+        <h3>1.1 Deep Dive: The Testing Pyramid</h3>
+        <p>Google's testing philosophy suggests:
+        <br>1. <strong>Unit Tests (70%):</strong> Fast, cheap, test individual functions.
+        <br>2. <strong>Integration Tests (20%):</strong> Test how components interact.
+        <br>3. <strong>E2E Tests (10%):</strong> Slow, expensive, test the full app flow (using Playwright/Cypress).</p>
+
+        <h3>1.2 Industry Standard: Mocking</h3>
+        <p>In a real job, you never hit the real API in a unit test. It's slow and flaky. We use <strong>MSW (Mock Service Worker)</strong> to intercept network requests at the network level. This is superior to mocking <code>fetch</code> directly because it mimics the browser's behavior more closely.</p>
+
+        <details>
+            <summary><strong>📚 Deep Dive (Documentation)</strong></summary>
+            <ul>
+                <li><a href="https://vitest.dev/guide/" target="_blank">Vitest Guide</a></li>
+                <li><a href="https://testing-library.com/docs/react-testing-library/intro/" target="_blank">React Testing Library</a></li>
+            </ul>
+        </details>
+
+        <h2>2. The Setup Challenge</h2>
+        <div class="task">
+            <h3>Task: Configure Test Environment</h3>
+            <p>Vite doesn't come with tests by default.</p>
+            <ol>
+                <li>Install <code>vitest</code>, <code>jsdom</code>, and <code>@testing-library/react</code>.</li>
+                <li>Configure <code>vite.config.ts</code> to support testing.</li>
+                <li>Add a <code>test</code> script to <code>package.json</code>.</li>
+            </ol>
+        </div>
+
+        <h2>3. The Build Challenge: "Test Coverage"</h2>
+        <div class="task">
+            <h3>Level 1: The Basics</h3>
+            <p>Write tests for your previous components.</p>
+            <ol>
+                <li><strong>Unit Test (UserCard):</strong>
+                    <ul>
+                        <li>Render the card.</li>
+                        <li>Assert that the name and role are displayed.</li>
+                        <li>Assert that the "green dot" class is present if <code>isActive</code> is true.</li>
+                    </ul>
+                </li>
+                <li><strong>Integration Test (Counter):</strong>
+                    <ul>
+                        <li>Render the Counter.</li>
+                        <li>Find the "Increment" button and click it (fireEvent or userEvent).</li>
+                        <li>Assert that the count text updates to "1".</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Level 2: Senior Constraints (Async & Mocking)</h3>
+            <ul>
+                <li><strong>Async Test (User List):</strong>
+                    <ul>
+                        <li>Mock the API call (use <code>vi.spyOn(global, 'fetch')</code> or MSW).</li>
+                        <li>Assert that "Loading..." appears first.</li>
+                        <li>Assert that user names appear after the promise resolves.</li>
+                    </ul>
+                </li>
+                <li><strong>Test a Custom Hook:</strong> Create a hook <code>useCounter</code>. Use <code>renderHook</code> and <code>act</code> from testing-library to test it in isolation (without a component).</li>
+                <li><strong>Accessibility Test:</strong> Use <code>jest-axe</code> (or vitest equivalent) to assert that your component has no accessibility violations.</li>
+            </ul>
+
+            <h3>Level 3: Nice to Haves</h3>
+            <ul>
+                <li><strong>Custom Render:</strong> Create a custom <code>render</code> function that automatically wraps components in your Providers (Theme, Auth, Redux). This saves you from wrapping every single test manually.</li>
+                <li><strong>Snapshot Testing:</strong> Add a snapshot test for a static component (like a Footer) to catch accidental UI changes.</li>
+            </ul>
+        </div>
+
+        <h2>4. The Bug Hunt</h2>
+        <div class="bug-hunt">
+            <h3>🐛 Scenario: The "Act" Warning</h3>
+            <p><strong>The Setup:</strong> Update a state inside a <code>useEffect</code> or async operation, but assert the result immediately in your test without waiting.</p>
+            <p><strong>The Issue:</strong> React will warn: "An update to Component inside a test was not wrapped in act(...)".</p>
+            <p><strong>The Task:</strong> Fix this using <code>waitFor</code> or <code>findBy</code> queries from React Testing Library.</p>
+        </div>
+
+        <h2>5. Test on your own</h2>
+        <div class="task">
+            <h3>Verify your Tests</h3>
+            <ul>
+                <li><strong>Breakage Check:</strong> Go into your <code>UserCard</code> component and change the name rendering logic (e.g., make it uppercase). Run your tests. Do they fail? (They should). If they pass, your test is useless.</li>
+                <li><strong>Async Check:</strong> In your User List test, add a <code>await new Promise(r => setTimeout(r, 100))</code> inside your mock to simulate network lag. Does your test still pass? (It should, if you used <code>findBy</code> correctly).</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>Module 7 Complete? Move to Module 8.</p>
+    </footer>
+</body>
+</html>

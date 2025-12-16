@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3: Routing & API</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
+        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Module 3: Routing & API</h1>
+        <p>React Router DOM and Fetching Data.</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="module0.html">0. JS Prep</a>
+        <a href="module1.html">1. Fundamentals</a>
+        <a href="module2.html">2. Hooks & Lifecycle</a>
+        <a href="module3.html">3. Routing & API</a>
+        <a href="module4.html">4. State & Forms</a>
+        <a href="module5.html">5. Advanced Patterns</a>
+        <a href="module6.html">6. Global State</a>
+        <a href="module7.html">7. Testing</a>
+        <a href="module8.html">8. Pro Workflow</a>
+        <a href="module9.html">9. Perf & Security</a>
+        <a href="capstone.html">Capstone</a>
+    </nav>
+
+    <main>
+        <h2>1. Core Concepts</h2>
+        <p><strong>React Router:</strong> React is a "Single Page App" (SPA). We don't reload the browser to change pages; we just swap components.</p>
+        <ul>
+            <li><code>BrowserRouter</code>: The manager. Wraps the app.</li>
+            <li><code>Routes/Route</code>: The map. "If URL is /about, show AboutComponent".</li>
+            <li><code>Link</code>: The anchor tag replacement. Prevents full page reload.</li>
+        </ul>
+        <p><strong>Fetching Data:</strong> Usually done in <code>useEffect</code>. You must handle 3 states: <strong>Loading</strong> (spinner), <strong>Error</strong> (message), and <strong>Data</strong> (content).</p>
+
+        <h3>1.1 Deep Dive: Client-Side Routing vs. Server-Side Routing</h3>
+        <p>Traditional websites request a new HTML file for every page load. React SPAs (Single Page Applications) load one HTML file once. When you click a link, JavaScript intercepts the click, changes the URL in the address bar (using the History API), and swaps the components on the screen. This is instant but requires careful management of browser history and scroll position.</p>
+
+        <h3>1.2 Industry Standard: The Service Layer</h3>
+        <p>Senior developers never call <code>fetch</code> directly inside a component. They create a "Service Layer" or "API Client". This makes code reusable and testable.</p>
+        <pre><code>// api/userApi.ts
+export const getUser = async (id: string) => {
+  const response = await fetch(\`/api/users/\${id}\`);
+  if (!response.ok) throw new Error('Failed to fetch');
+  return response.json();
+};
+
+// Component
+// import { getUser } from '../api/userApi';
+// ... inside useEffect ...
+getUser(id).then(setData).catch(setError);</code></pre>
+
+        <details>
+            <summary><strong>📚 Deep Dive (Documentation)</strong></summary>
+            <ul>
+                <li><a href="https://reactrouter.com/en/main/start/tutorial" target="_blank">React Router Tutorial</a></li>
+                <li><a href="https://react.dev/learn/synchronizing-with-effects#fetching-data" target="_blank">Fetching Data in Effects</a></li>
+            </ul>
+        </details>
+
+        <h2>2. The Setup Challenge</h2>
+        <div class="task">
+            <h3>Task: Install Router</h3>
+            <p>Install <code>react-router-dom</code>.</p>
+            <p>Refactor your <code>App.tsx</code> to use <code>BrowserRouter</code>, <code>Routes</code>, and <code>Route</code>.</p>
+            <p>Create two pages: <code>Home</code> and <code>Users</code>.</p>
+        </div>
+
+        <h2>3. The Build Challenge: "User Directory"</h2>
+        <div class="task">
+            <h3>Level 1: The Basics</h3>
+            <p>We will use the free API: <a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder</a>.</p>
+            <ol>
+                <li><strong>Users Page:</strong>
+                    <ul>
+                        <li>On mount, fetch the list of users from <code>https://jsonplaceholder.typicode.com/users</code>.</li>
+                        <li>Show a "Loading..." state while fetching.</li>
+                        <li>Handle errors (e.g., simulate a network failure) and show an error message.</li>
+                        <li>Display the list of users (Name and Email).</li>
+                        <li>Make the user's name a link to <code>/users/:id</code>.</li>
+                    </ul>
+                </li>
+                <li><strong>User Detail Page (Dynamic Route):</strong>
+                    <ul>
+                        <li>Use <code>useParams</code> to get the ID from the URL.</li>
+                        <li>Fetch the specific user details using that ID.</li>
+                        <li>Display their full address and company info.</li>
+                        <li>Add a "Back" button.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Level 2: Senior Constraints</h3>
+            <ul>
+                <li><strong>Generic Fetch Hook:</strong> Create a reusable hook <code>useFetch&lt;T&gt;(url: string)</code> that handles loading, error, and data states generically. Use TypeScript generics so the component knows what data type to expect.</li>
+                <li><strong>404 Handling:</strong> If the user types a random ID (e.g., <code>/users/9999</code>), the API will return a 404. Your app should catch this and render a "User Not Found" component, not crash or show empty data.</li>
+            </ul>
+
+            <h3>Level 3: Nice to Haves</h3>
+            <ul>
+                <li><strong>Query Params:</strong> Add a search bar to the Users page. Update the URL to <code>/users?search=alice</code>. Filter the list based on the URL query param, so the search is shareable.</li>
+                <li><strong>Active Links:</strong> Use <code>NavLink</code> instead of <code>Link</code> for your navigation menu to automatically style the active page.</li>
+            </ul>
+        </div>
+
+        <h2>4. The Bug Hunt</h2>
+        <div class="bug-hunt">
+            <h3>🐛 Scenario: The Memory Leak</h3>
+            <p><strong>The Setup:</strong> Navigate to the Users page (which starts a fetch). Before the fetch finishes, quickly click "Home" to navigate away.</p>
+            <p><strong>The Issue:</strong> React might warn you about "Can't perform a React state update on an unmounted component". (Note: React 18 handles this better, but it's still bad practice to ignore).</p>
+            <p><strong>The Task:</strong> Implement an <code>AbortController</code> in your <code>useEffect</code> to cancel the fetch request if the component unmounts.</p>
+        </div>
+
+        <h2>5. Test on your own</h2>
+        <div class="task">
+            <h3>Verify your Routing</h3>
+            <ul>
+                <li><strong>History Check:</strong> Navigate Home -> Users -> User 1. Click the browser's "Back" button. Does it go to Users? Click "Back" again. Does it go Home? (It should).</li>
+                <li><strong>404 Check:</strong> Type a nonsense URL like <code>/banana</code>. Does your app show a "Page Not Found" route, or does it just show a blank screen? (You should have a "catch-all" route <code>path="*"</code>).</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>Module 3 Complete? Move to Module 4.</p>
+    </footer>
+</body>
+</html>

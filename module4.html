@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: State & Forms</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
+        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Module 4: State & Forms</h1>
+        <p>Controlled Components, Validation, and Context API.</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="module0.html">0. JS Prep</a>
+        <a href="module1.html">1. Fundamentals</a>
+        <a href="module2.html">2. Hooks & Lifecycle</a>
+        <a href="module3.html">3. Routing & API</a>
+        <a href="module4.html">4. State & Forms</a>
+        <a href="module5.html">5. Advanced Patterns</a>
+        <a href="module6.html">6. Global State</a>
+        <a href="module7.html">7. Testing</a>
+        <a href="module8.html">8. Pro Workflow</a>
+        <a href="module9.html">9. Perf & Security</a>
+        <a href="capstone.html">Capstone</a>
+    </nav>
+
+    <main>
+        <h2>1. Core Concepts</h2>
+        <p><strong>Controlled Inputs:</strong> In HTML, inputs manage their own state. In React, we hijack that. <code>value={state}</code> and <code>onChange={setState}</code>. The React state becomes the "single source of truth".</p>
+        <p><strong>Context API:</strong> Solves "Prop Drilling" (passing data through 5 layers of components that don't need it).</p>
+        <ul>
+            <li><code>createContext</code>: Creates the data pipe.</li>
+            <li><code>Provider</code>: Puts data into the pipe at the top.</li>
+            <li><code>useContext</code>: Extracts data from the pipe at the bottom.</li>
+        </ul>
+
+        <h3>1.1 Deep Dive: Controlled vs Uncontrolled</h3>
+        <p>While "Controlled" (React state drives input) is the standard, "Uncontrolled" (DOM drives input, React reads it via Ref) is valid for simple forms or integrating with non-React libraries. However, for complex validation, Controlled is king.</p>
+
+        <h3>1.2 Industry Standard: Form Libraries</h3>
+        <p>Building forms from scratch is painful. In the real world, we use libraries like <strong>React Hook Form</strong> or <strong>Formik</strong>. They handle validation, error messages, and "touched" states (knowing if a user has clicked a field) much better than manual state.</p>
+        <p><em>For this module, build it manually to understand the pain. In Module 5, we might use a library.</em></p>
+
+        <details>
+            <summary><strong>📚 Deep Dive (Documentation)</strong></summary>
+            <ul>
+                <li><a href="https://react.dev/reference/react-dom/components/input" target="_blank">Controlled Inputs</a></li>
+                <li><a href="https://react.dev/learn/passing-data-deeply-with-context" target="_blank">Context API</a></li>
+            </ul>
+        </details>
+
+        <h2>2. The Build Challenge: "Login Flow"</h2>
+        <div class="task">
+            <h3>Level 1: The Basics</h3>
+            <p>Create a <code>LoginForm</code> component.</p>
+            <ul>
+                <li>Fields: Email, Password.</li>
+                <li><strong>Validation:</strong>
+                    <ul>
+                        <li>Email must contain "@".</li>
+                        <li>Password must be > 6 chars.</li>
+                        <li>Disable the "Submit" button if invalid.</li>
+                    </ul>
+                </li>
+                <li>Show error messages in red below the inputs.</li>
+            </ul>
+
+            <h3>Level 2: Senior Constraints (Context Architecture)</h3>
+            <p>Create an <code>AuthContext</code>.</p>
+            <ul>
+                <li><strong>Type Safety:</strong> Define a proper interface for your Context Value (e.g., <code>AuthContextType</code>). Do not default the context to <code>null</code> without handling it. (Tip: <code>createContext&lt;AuthContextType | undefined&gt;(undefined)</code>).</li>
+                <li><strong>Custom Hook:</strong> Create a <code>useAuth()</code> hook that wraps <code>useContext</code>. It should throw an error if used outside of an <code>AuthProvider</code>. This is a fail-fast mechanism.</li>
+                <li><strong>Logic:</strong>
+                    <ul>
+                        <li>Wrap your entire app in <code>AuthProvider</code>.</li>
+                        <li>When the <code>LoginForm</code> submits successfully, call <code>login()</code> from the context.</li>
+                        <li>Update the Header to show "Welcome, [Name]" and a "Logout" button if the user is logged in.</li>
+                        <li>Redirect to the Home page upon login.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Level 3: Nice to Haves</h3>
+            <ul>
+                <li><strong>Persisted Auth:</strong> Save the user's login token (fake it) to <code>localStorage</code>. On app refresh, check storage and auto-login the user if the token exists.</li>
+                <li><strong>Protected Route:</strong> Create a wrapper component <code>&lt;RequireAuth&gt;</code>. If a non-logged-in user tries to visit <code>/dashboard</code>, automatically redirect them to <code>/login</code>.</li>
+            </ul>
+        </div>
+
+        <h2>3. The Bug Hunt</h2>
+        <div class="bug-hunt">
+            <h3>🐛 Scenario: Excessive Re-renders</h3>
+            <p><strong>The Setup:</strong> Put a <code>console.log("Rendering App")</code> in your root App component.</p>
+            <p><strong>The Issue:</strong> Type into your email input. Does the <em>entire</em> App re-render on every keystroke? If your state is lifted too high, it might.</p>
+            <p><strong>The Task:</strong> Optimize. Ensure that typing in the form only re-renders the form, not the Header or Footer.</p>
+        </div>
+
+        <h2>4. Test on your own</h2>
+        <div class="task">
+            <h3>Verify your State</h3>
+            <ul>
+                <li><strong>Refresh Check:</strong> Log in, then refresh the page. Are you still logged in? (Only if you did Level 3). If not, does the app crash?</li>
+                <li><strong>Redirect Check:</strong> If you are already logged in, try to manually visit <code>/login</code>. A smart app should redirect you back to the dashboard because you don't need to login twice.</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>Module 4 Complete? Move to Module 5.</p>
+    </footer>
+</body>
+</html>

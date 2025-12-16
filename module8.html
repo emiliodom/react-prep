@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8: Pro Workflow</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        nav { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .task { background: #e2e3e5; border-left: 5px solid #383d41; padding: 15px; margin: 20px 0; }
+        .bug-hunt { background: #f8d7da; border-left: 5px solid #721c24; padding: 15px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        footer { margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px; font-size: 0.9em; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Module 8: Pro Workflow</h1>
+        <p>Linting, Formatting, and CI/CD.</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="module0.html">0. JS Prep</a>
+        <a href="module1.html">1. Fundamentals</a>
+        <a href="module2.html">2. Hooks & Lifecycle</a>
+        <a href="module3.html">3. Routing & API</a>
+        <a href="module4.html">4. State & Forms</a>
+        <a href="module5.html">5. Advanced Patterns</a>
+        <a href="module6.html">6. Global State</a>
+        <a href="module7.html">7. Testing</a>
+        <a href="module8.html">8. Pro Workflow</a>
+        <a href="module9.html">9. Perf & Security</a>
+        <a href="capstone.html">Capstone</a>
+    </nav>
+
+    <main>
+        <h2>1. Core Concepts</h2>
+        <p><strong>Linting (ESLint):</strong> Static analysis. It finds bugs before you run code (e.g., "You defined 'x' but never used it", or "You broke the Rules of Hooks").</p>
+        <p><strong>Formatting (Prettier):</strong> Style enforcement. It ensures everyone's code looks the same (indentation, quotes, semicolons) regardless of who wrote it.</p>
+        <p><strong>Husky (Git Hooks):</strong> Automation. It runs your linter and tests <em>before</em> you commit. If they fail, the commit is blocked. This keeps the repository clean.</p>
+
+        <h3>1.1 Deep Dive: Static Analysis</h3>
+        <p>Linting isn't just about style; it's about catching logic errors. Rules like <code>react-hooks/exhaustive-deps</code> save you from infinite loops. Rules like <code>no-floating-promises</code> save you from unhandled async errors.</p>
+
+        <h3>1.2 Industry Standard: Conventional Commits</h3>
+        <p>Professional teams use a standard format for commit messages: <code>feat: add user login</code>, <code>fix: resolve crash on safari</code>. This allows tools to automatically generate changelogs and semantic version numbers.</p>
+
+        <h3>1.3 Senior Skill: Debugging vs. Console.log</h3>
+        <p>Juniors spam <code>console.log</code>. Seniors use the <strong>Debugger</strong>.
+        <br>Learn to use the <code>debugger;</code> statement or VS Code's "Run and Debug" tab. You can pause execution, inspect variables in real-time, and step through the call stack. It is 10x faster than logging and reloading.</p>
+
+        <details>
+            <summary><strong>📚 Deep Dive (Documentation)</strong></summary>
+            <ul>
+                <li><a href="https://eslint.org/" target="_blank">ESLint</a></li>
+                <li><a href="https://prettier.io/" target="_blank">Prettier</a></li>
+                <li><a href="https://typicode.github.io/husky/" target="_blank">Husky (Git Hooks)</a></li>
+            </ul>
+        </details>
+
+        <h2>2. The Build Challenge: "The Guardrails"</h2>
+        <div class="task">
+            <h3>Level 1: The Basics</h3>
+            <ol>
+                <li><strong>ESLint & Prettier:</strong>
+                    <ul>
+                        <li>Install and configure them to work together.</li>
+                        <li>Add a rule: No <code>console.log</code> allowed.</li>
+                        <li>Add a rule: Imports must be sorted alphabetically.</li>
+                    </ul>
+                </li>
+                <li><strong>Husky & Lint-Staged:</strong>
+                    <ul>
+                        <li>Configure a pre-commit hook.</li>
+                        <li>It should run <code>tsc</code> (type check) and <code>lint</code> on staged files.</li>
+                        <li>Prevent the commit if there are errors.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Level 2: Senior Constraints (Strictness)</h3>
+            <ul>
+                <li><strong>Absolute Imports:</strong> Configure <code>tsconfig.json</code> and Vite to allow imports like <code>@/components/Button</code> instead of <code>../../components/Button</code>.</li>
+                <li><strong>Strict Null Checks:</strong> Ensure <code>strict: true</code> is enabled in <code>tsconfig.json</code>. Go back and fix any errors this causes in your previous modules.</li>
+                <li><strong>Component Documentation:</strong> Install <strong>Storybook</strong> (or Ladle). Create a story for your "Button" and "Card" components. This forces you to isolate your UI from your business logic.</li>
+            </ul>
+
+            <h3>Level 3: Nice to Haves</h3>
+            <ul>
+                <li><strong>CommitLint:</strong> Add <code>commitlint</code> to your Husky hooks to enforce "Conventional Commits" (e.g., blocking "wip" or "fixed stuff" messages).</li>
+                <li><strong>GitHub Actions:</strong> Create a <code>.github/workflows/ci.yml</code> file. It should run <code>npm install</code>, <code>npm run lint</code>, and <code>npm run test</code> on every push to main.</li>
+            </ul>
+        </div>
+
+        <h2>3. Test on your own</h2>
+        <div class="task">
+            <h3>Verify your Workflow</h3>
+            <ul>
+                <li><strong>The "Bad Commit" Test:</strong> Add a <code>console.log('test')</code> to a file. Try to commit it. Does Husky stop you?</li>
+                <li><strong>The "Bad Type" Test:</strong> Introduce a type error (e.g., <code>const x: number = "string"</code>). Try to commit. Does <code>tsc</code> stop you?</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>Module 8 Complete? Move to Module 9.</p>
+    </footer>
+</body>
+</html>
